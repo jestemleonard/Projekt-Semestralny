@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SzkolaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Grupa">
+          <Key>
+            <PropertyRef Name="Nazwa_Grupy" />
+          </Key>
+          <Property Name="Nazwa_Grupy" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Rok" Type="int" Nullable="false" />
+          <Property Name="Kierunek" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Oceny">
+          <Key>
+            <PropertyRef Name="ID_Oceny" />
+          </Key>
+          <Property Name="ID_Oceny" Type="int" Nullable="false" />
+          <Property Name="Nazwa_Przedmiotu" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ocena" Type="int" Nullable="false" />
+          <Property Name="Legitymacja" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prowadzacy">
+          <Key>
+            <PropertyRef Name="Prowadzacy_ID" />
+          </Key>
+          <Property Name="Prowadzacy_ID" Type="int" Nullable="false" />
+          <Property Name="P_Imie" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="P_Nazwisko" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Przedmioty">
+          <Key>
+            <PropertyRef Name="Nazwa_Przedmiotu" />
+          </Key>
+          <Property Name="Nazwa_Przedmiotu" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prowadzacy_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Uczniowie">
+          <Key>
+            <PropertyRef Name="Legitymacja" />
+          </Key>
+          <Property Name="Legitymacja" Type="int" Nullable="false" />
+          <Property Name="S_Imie" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="S_Nazwisko" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nazwa_Grupy" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Oceny_Przedmioty">
+          <End Role="Przedmioty" Type="Self.Przedmioty" Multiplicity="1" />
+          <End Role="Oceny" Type="Self.Oceny" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Przedmioty">
+              <PropertyRef Name="Nazwa_Przedmiotu" />
+            </Principal>
+            <Dependent Role="Oceny">
+              <PropertyRef Name="Nazwa_Przedmiotu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oceny_Uczniowie">
+          <End Role="Uczniowie" Type="Self.Uczniowie" Multiplicity="1" />
+          <End Role="Oceny" Type="Self.Oceny" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uczniowie">
+              <PropertyRef Name="Legitymacja" />
+            </Principal>
+            <Dependent Role="Oceny">
+              <PropertyRef Name="Legitymacja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Przedmioty_Prowadzacy">
+          <End Role="Prowadzacy" Type="Self.Prowadzacy" Multiplicity="1" />
+          <End Role="Przedmioty" Type="Self.Przedmioty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prowadzacy">
+              <PropertyRef Name="Prowadzacy_ID" />
+            </Principal>
+            <Dependent Role="Przedmioty">
+              <PropertyRef Name="Prowadzacy_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Uczniowie_Grupa">
+          <End Role="Grupa" Type="Self.Grupa" Multiplicity="1" />
+          <End Role="Uczniowie" Type="Self.Uczniowie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupa">
+              <PropertyRef Name="Nazwa_Grupy" />
+            </Principal>
+            <Dependent Role="Uczniowie">
+              <PropertyRef Name="Nazwa_Grupy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SzkolaModelStoreContainer">
+          <EntitySet Name="Grupa" EntityType="Self.Grupa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Oceny" EntityType="Self.Oceny" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prowadzacy" EntityType="Self.Prowadzacy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Przedmioty" EntityType="Self.Przedmioty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Uczniowie" EntityType="Self.Uczniowie" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Oceny_Przedmioty" Association="Self.FK_Oceny_Przedmioty">
+            <End Role="Przedmioty" EntitySet="Przedmioty" />
+            <End Role="Oceny" EntitySet="Oceny" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oceny_Uczniowie" Association="Self.FK_Oceny_Uczniowie">
+            <End Role="Uczniowie" EntitySet="Uczniowie" />
+            <End Role="Oceny" EntitySet="Oceny" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Przedmioty_Prowadzacy" Association="Self.FK_Przedmioty_Prowadzacy">
+            <End Role="Prowadzacy" EntitySet="Prowadzacy" />
+            <End Role="Przedmioty" EntitySet="Przedmioty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Uczniowie_Grupa" Association="Self.FK_Uczniowie_Grupa">
+            <End Role="Grupa" EntitySet="Grupa" />
+            <End Role="Uczniowie" EntitySet="Uczniowie" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SzkolaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Grupa">
+          <Key>
+            <PropertyRef Name="Nazwa_Grupy" />
+          </Key>
+          <Property Name="Nazwa_Grupy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rok" Type="Int32" Nullable="false" />
+          <Property Name="Kierunek" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Uczniowies" Relationship="Self.FK_Uczniowie_Grupa" FromRole="Grupa" ToRole="Uczniowie" />
+        </EntityType>
+        <EntityType Name="Oceny">
+          <Key>
+            <PropertyRef Name="ID_Oceny" />
+          </Key>
+          <Property Name="ID_Oceny" Type="Int32" Nullable="false" />
+          <Property Name="Nazwa_Przedmiotu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ocena" Type="Int32" Nullable="false" />
+          <Property Name="Legitymacja" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Przedmioty" Relationship="Self.FK_Oceny_Przedmioty" FromRole="Oceny" ToRole="Przedmioty" />
+          <NavigationProperty Name="Uczniowie" Relationship="Self.FK_Oceny_Uczniowie" FromRole="Oceny" ToRole="Uczniowie" />
+        </EntityType>
+        <EntityType Name="Prowadzacy">
+          <Key>
+            <PropertyRef Name="Prowadzacy_ID" />
+          </Key>
+          <Property Name="Prowadzacy_ID" Type="Int32" Nullable="false" />
+          <Property Name="P_Imie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="P_Nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Przedmioties" Relationship="Self.FK_Przedmioty_Prowadzacy" FromRole="Prowadzacy" ToRole="Przedmioty" />
+        </EntityType>
+        <EntityType Name="Przedmioty">
+          <Key>
+            <PropertyRef Name="Nazwa_Przedmiotu" />
+          </Key>
+          <Property Name="Nazwa_Przedmiotu" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Prowadzacy_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ocenies" Relationship="Self.FK_Oceny_Przedmioty" FromRole="Przedmioty" ToRole="Oceny" />
+          <NavigationProperty Name="Prowadzacy" Relationship="Self.FK_Przedmioty_Prowadzacy" FromRole="Przedmioty" ToRole="Prowadzacy" />
+        </EntityType>
+        <EntityType Name="Uczniowie">
+          <Key>
+            <PropertyRef Name="Legitymacja" />
+          </Key>
+          <Property Name="Legitymacja" Type="Int32" Nullable="false" />
+          <Property Name="S_Imie" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="S_Nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nazwa_Grupy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Grupa" Relationship="Self.FK_Uczniowie_Grupa" FromRole="Uczniowie" ToRole="Grupa" />
+          <NavigationProperty Name="Ocenies" Relationship="Self.FK_Oceny_Uczniowie" FromRole="Uczniowie" ToRole="Oceny" />
+        </EntityType>
+        <Association Name="FK_Uczniowie_Grupa">
+          <End Role="Grupa" Type="Self.Grupa" Multiplicity="1" />
+          <End Role="Uczniowie" Type="Self.Uczniowie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupa">
+              <PropertyRef Name="Nazwa_Grupy" />
+            </Principal>
+            <Dependent Role="Uczniowie">
+              <PropertyRef Name="Nazwa_Grupy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oceny_Przedmioty">
+          <End Role="Przedmioty" Type="Self.Przedmioty" Multiplicity="1" />
+          <End Role="Oceny" Type="Self.Oceny" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Przedmioty">
+              <PropertyRef Name="Nazwa_Przedmiotu" />
+            </Principal>
+            <Dependent Role="Oceny">
+              <PropertyRef Name="Nazwa_Przedmiotu" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oceny_Uczniowie">
+          <End Role="Uczniowie" Type="Self.Uczniowie" Multiplicity="1" />
+          <End Role="Oceny" Type="Self.Oceny" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uczniowie">
+              <PropertyRef Name="Legitymacja" />
+            </Principal>
+            <Dependent Role="Oceny">
+              <PropertyRef Name="Legitymacja" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Przedmioty_Prowadzacy">
+          <End Role="Prowadzacy" Type="Self.Prowadzacy" Multiplicity="1" />
+          <End Role="Przedmioty" Type="Self.Przedmioty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prowadzacy">
+              <PropertyRef Name="Prowadzacy_ID" />
+            </Principal>
+            <Dependent Role="Przedmioty">
+              <PropertyRef Name="Prowadzacy_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SzkolaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Grupas" EntityType="Self.Grupa" />
+          <EntitySet Name="Ocenies" EntityType="Self.Oceny" />
+          <EntitySet Name="Prowadzacies" EntityType="Self.Prowadzacy" />
+          <EntitySet Name="Przedmioties" EntityType="Self.Przedmioty" />
+          <EntitySet Name="Uczniowies" EntityType="Self.Uczniowie" />
+          <AssociationSet Name="FK_Uczniowie_Grupa" Association="Self.FK_Uczniowie_Grupa">
+            <End Role="Grupa" EntitySet="Grupas" />
+            <End Role="Uczniowie" EntitySet="Uczniowies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oceny_Przedmioty" Association="Self.FK_Oceny_Przedmioty">
+            <End Role="Przedmioty" EntitySet="Przedmioties" />
+            <End Role="Oceny" EntitySet="Ocenies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oceny_Uczniowie" Association="Self.FK_Oceny_Uczniowie">
+            <End Role="Uczniowie" EntitySet="Uczniowies" />
+            <End Role="Oceny" EntitySet="Ocenies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Przedmioty_Prowadzacy" Association="Self.FK_Przedmioty_Prowadzacy">
+            <End Role="Prowadzacy" EntitySet="Prowadzacies" />
+            <End Role="Przedmioty" EntitySet="Przedmioties" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SzkolaModelStoreContainer" CdmEntityContainer="SzkolaEntities">
+          <EntitySetMapping Name="Grupas">
+            <EntityTypeMapping TypeName="SzkolaModel.Grupa">
+              <MappingFragment StoreEntitySet="Grupa">
+                <ScalarProperty Name="Nazwa_Grupy" ColumnName="Nazwa_Grupy" />
+                <ScalarProperty Name="Rok" ColumnName="Rok" />
+                <ScalarProperty Name="Kierunek" ColumnName="Kierunek" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ocenies">
+            <EntityTypeMapping TypeName="SzkolaModel.Oceny">
+              <MappingFragment StoreEntitySet="Oceny">
+                <ScalarProperty Name="ID_Oceny" ColumnName="ID_Oceny" />
+                <ScalarProperty Name="Nazwa_Przedmiotu" ColumnName="Nazwa_Przedmiotu" />
+                <ScalarProperty Name="Ocena" ColumnName="Ocena" />
+                <ScalarProperty Name="Legitymacja" ColumnName="Legitymacja" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prowadzacies">
+            <EntityTypeMapping TypeName="SzkolaModel.Prowadzacy">
+              <MappingFragment StoreEntitySet="Prowadzacy">
+                <ScalarProperty Name="Prowadzacy_ID" ColumnName="Prowadzacy_ID" />
+                <ScalarProperty Name="P_Imie" ColumnName="P_Imie" />
+                <ScalarProperty Name="P_Nazwisko" ColumnName="P_Nazwisko" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Przedmioties">
+            <EntityTypeMapping TypeName="SzkolaModel.Przedmioty">
+              <MappingFragment StoreEntitySet="Przedmioty">
+                <ScalarProperty Name="Nazwa_Przedmiotu" ColumnName="Nazwa_Przedmiotu" />
+                <ScalarProperty Name="Prowadzacy_ID" ColumnName="Prowadzacy_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Uczniowies">
+            <EntityTypeMapping TypeName="SzkolaModel.Uczniowie">
+              <MappingFragment StoreEntitySet="Uczniowie">
+                <ScalarProperty Name="Legitymacja" ColumnName="Legitymacja" />
+                <ScalarProperty Name="S_Imie" ColumnName="S_Imie" />
+                <ScalarProperty Name="S_Nazwisko" ColumnName="S_Nazwisko" />
+                <ScalarProperty Name="Nazwa_Grupy" ColumnName="Nazwa_Grupy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
