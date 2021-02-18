@@ -24,5 +24,19 @@ namespace Projekt_Semestralny
         {
             InitializeComponent();
         }
+
+        private SzkolaEntities db = new SzkolaEntities();
+
+        private void OnStudentClick(object sender, RoutedEventArgs e)
+        {
+            new StudentLoggedIn().Show();
+            this.Close();
+        }
+
+        private void OnProwadzacyClick(object sender, RoutedEventArgs e)
+        {
+            new ProwadzacyLoggedIn().Show();
+            this.Close();
+        }
     }
 }
